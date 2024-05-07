@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 from views.user import create_user, login_user
+from views.post import get_all_posts, get_single_post, create_post, update_post, delete_post
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -50,12 +51,26 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        """Handle Get requests to the server"""
+        self._set_headers(200)
+
+        response = {}
+
+        parsed = self.parse_url()
+
+        if "?" not in self.path:
+            (resource, id) = parsed
+
+            if resource == "posts":
+                if id is not None:
+                    response = get_single_post(id)
+
+                else:
+                    response = get_all_posts()
+
+        self.wfile.write(json.dumps(response).encode())
         pass
 
-
     def do_POST(self):
-        """Make a post request to the server"""
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
@@ -67,14 +82,46 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == 'register':
             response = create_user(post_body)
 
+        new_post = None
+
+        if resource == "posts":
+            new_post = create_post(post_body)
+
+        self.wfile.write(json.dumps(new_post).encode())
+
         self.wfile.write(response.encode())
 
     def do_PUT(self):
-        """Handles PUT requests to the server"""
+        content_len = int(self.headers.get("content-length", 0))
+
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
+        (resource, id) = self.parse_url(self.path)
+
+        success = False
+
+        if resource == "posts":
+
+            success = update_post(id, post_body)
+
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
+
+        self.wfile.write("".encode())
         pass
 
     def do_DELETE(self):
-        """Handle DELETE Requests"""
+        self._set_headers(204)
+
+        (resource, id) = self.parse_url(self.path)
+
+        if resource == "posts":
+            delete_post(id)
+
+        self.wfile.write("".encode())
         pass
 
 
