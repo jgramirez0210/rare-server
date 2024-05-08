@@ -1,11 +1,15 @@
 {
     "_meta": {
         "hash": {
+<<<<<<< HEAD
             "sha256": "733c3d6ed53e19503b8cf32589663e45dd23610c9c8b2850a5e7a36c1aeeb652"
+=======
+            "sha256": "555989c960503f754aaa988b5893370104a11132907beae24703c8d893ed9b2a"
+>>>>>>> main
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.9"
+            "python_version": "*"
         },
         "sources": [
             {
@@ -33,6 +37,17 @@
             "markers": "python_version >= '3.8'",
             "version": "==2.1.0"
         },
+<<<<<<< HEAD
+=======
+        "colorama": {
+            "hashes": [
+                "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44",
+                "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
+            ],
+            "markers": "sys_platform == 'win32'",
+            "version": "==0.4.6"
+        },
+>>>>>>> main
         "dill": {
             "hashes": [
                 "sha256:3ebe3c479ad625c4553aca177444d89b486b1d84982eeacded644afc0cf797ca",
@@ -125,6 +140,7 @@
             "markers": "python_full_version >= '3.7.2'",
             "version": "==2.15.5"
         },
+<<<<<<< HEAD
         "python-version": {
             "hashes": [
                 "sha256:2c7429f3375cee19873892e5db4d10d2b42172d8851a8bb5111729e028470580",
@@ -135,6 +151,10 @@
         },
         "tomli": {
             "hashes": [
+=======
+        "tomli": {
+            "hashes": [
+>>>>>>> main
                 "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc",
                 "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
             ],
