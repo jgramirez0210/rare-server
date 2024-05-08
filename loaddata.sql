@@ -39,7 +39,7 @@ CREATE TABLE "Posts" (
   "image_url" varchar,
   "content" varchar,
   "approved" bit,
-  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`),
+  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
 );
 
 CREATE TABLE "Comments" (
@@ -93,3 +93,6 @@ PRAGMA table_info(Users);
 PRAGMA table_info(Categories);
 PRAGMA table_info(PostTags);
 PRAGMA table_info(Tags);
+PRAGMA table_info(Posts);
+
+INSERT INTO Posts VALUES (null, 1, 1, "First", "1999-09-11", "https://upload.wikimedia.org/wikipedia/commons/c/c5/World_Trade_Center%2C_New_York_City_-_aerial_view_%28March_2001%29.jpg", "Asolute first", 1);

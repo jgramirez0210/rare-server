@@ -2,6 +2,7 @@ import sqlite3
 import json
 from datetime import datetime
 
+
 def login_user(user):
     """Checks for the user in the database
 

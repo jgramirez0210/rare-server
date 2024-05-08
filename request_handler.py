@@ -3,6 +3,7 @@ import json
 from views import create_comment, get_all_comments, get_single_comment, delete_comment, update_comment
 
 from views.user import create_user, login_user
+from views.post import get_all_posts, get_single_post, create_post, update_post, delete_post
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -69,10 +70,16 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = get_all_comments()
 
+            if resource == "posts":
+                if id is not None:
+                    response = get_single_post(id)
+
+                else:
+                    response = get_all_posts()
+
         self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
-        """Make a post request to the server"""
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
@@ -83,6 +90,13 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = login_user(post_body)
         if resource == 'register':
             response = create_user(post_body)
+
+        new_post = None
+
+        if resource == "posts":
+            new_post = create_post(post_body)
+
+        self.wfile.write(json.dumps(new_post).encode())
 
         new_comment = None
         if resource == 'comments':
@@ -106,11 +120,19 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "comments":
             success = update_comment(id, post_body)
+        if resource == "posts":
+
+            success = update_post(id, post_body)
+
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
 
         self.wfile.write("".encode())
 
     def do_DELETE(self):
-        """Handle DELETE Requests"""
+        """Handles DELETE requests to the server"""
         self._set_headers(204)
 
         (resource, id) = self.parse_url()
@@ -118,7 +140,10 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "comments":
             delete_comment(id)
 
-        self.wfile.write("I deleted a comment".encode())
+        if resource == "posts":
+            delete_post(id)
+
+        self.wfile.write("".encode())
 
 
 def main():
