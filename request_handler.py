@@ -120,16 +120,18 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "comments":
             success = update_comment(id, post_body)
+        self.wfile.write("".encode())
         if resource == "posts":
 
             success = update_post(id, post_body)
+        self.wfile.write("".encode())
 
         if success:
             self._set_headers(204)
         else:
             self._set_headers(404)
 
-        self.wfile.write("".encode())
+
 
     def do_DELETE(self):
         """Handles DELETE requests to the server"""
