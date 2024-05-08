@@ -88,8 +88,8 @@ CREATE TABLE "Categories" (
 INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
-SELECT * FROM Users;
 
+SELECT * FROM Users;
 INSERT INTO Users (first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)
 VALUES ('John', 'Doe', 'john.doe@example.com', 'Bio of John', 'johndoe', 'password123', 'http://example.com/johndoe.jpg', date('now'), 1);
 INSERT INTO Users (first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)

@@ -7,24 +7,20 @@ from views.user import create_user, login_user, get_all_users, get_single_user, 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
-    def parse_url(self):
+    def parse_url(self, path):
         """Parse the url into the resource and id"""
-        path_params = self.path.split('/')
+        parsed_url = urlparse(path)
+        path_params = parsed_url.path.split('/')
         resource = path_params[1]
-        if '?' in resource:
-            param = resource.split('?')[1]
-            resource = resource.split('?')[0]
-            pair = param.split('=')
-            key = pair[0]
-            value = pair[1]
-            return (resource, key, value)
-        else:
-            id = None
-            try:
-                id = int(path_params[2])
-            except (IndexError, ValueError):
-                pass
-            return (resource, id)
+        if parsed_url.query:
+            query = parse_qs(parsed_url.query)
+            return (resource, query)
+        pk = None
+        try:
+            pk = int(path_params[2])
+        except (IndexError, ValueError):
+            pass
+        return (resource, pk)
 
     def _set_headers(self, status):
         """Sets the status code, Content-Type and Access-Control-Allow-Origin

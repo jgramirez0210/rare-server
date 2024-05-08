@@ -71,7 +71,7 @@ def create_user(user):
         })
 
 def update_user(id, new_user):
-    with sqlite3.connect("./db.sqlite3") as conn:
+    with sqlite3.connect("./kennel.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
@@ -175,13 +175,12 @@ def get_all_users_management():
 
         db_cursor.execute("""
         SELECT
-            u.id,
+            u.username,
             u.first_name,
             u.last_name,
-            u.email,
-            u.username
+            u.email
         FROM Users u
-        ORDER BY u.username COLLATE NOCASE ASC
+        ORDER BY u.username
         """)
 
         dataset = db_cursor.fetchall()

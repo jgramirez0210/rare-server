@@ -88,7 +88,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         post_body = json.loads(post_body)
         
         #Parse the URL
-        (resource, id) = self.parse_url()
+        (resource, id) = self.parse_url(self.path)
         #Update a single user
         if resource == "users":
             success = update_user(id, post_body)

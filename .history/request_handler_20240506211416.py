@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
-from views.user import create_user, login_user, get_all_users, get_single_user, get_all_users_management, update_user
+from views.user import create_user, login_user, get_all_users, get_single_user
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -9,6 +9,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def parse_url(self):
         """Parse the url into the resource and id"""
+        if path is None:
+            path = self.path
         path_params = self.path.split('/')
         resource = path_params[1]
         if '?' in resource:
@@ -53,7 +55,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         self._set_headers(200)
         response = {}
         
-        parsed = self.parse_url()
+        parsed = self.parse_url(self.path)
         
         if '?' not in self.path:
             ( resource, id ) = parsed
@@ -62,9 +64,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_user(id)}"
                 else:
                     response = f"{get_all_users()}"
-            elif resource == "users_management":
-                response = f"{get_all_users_management()}"
-        self.wfile.write(json.dumps(response).encode())        
+        self.wfile.write(json.dumps(response).encode())            
 
     def do_POST(self):
         """Make a post request to the server"""
@@ -83,20 +83,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
-        content_len = int(self.headers.get('content-length', 0))
-        post_body = self.rfile.read(content_len)
-        post_body = json.loads(post_body)
-        
-        #Parse the URL
-        (resource, id) = self.parse_url()
-        #Update a single user
-        if resource == "users":
-            success = update_user(id, post_body)
-            if success:
-                self._set_headers(204)
-            else:
-                self._set_headers(404)
-            self.wfile.write("".encode())    
+        pass
 
     def do_DELETE(self):
         """Handle DELETE Requests"""

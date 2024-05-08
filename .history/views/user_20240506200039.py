@@ -1,0 +1,140 @@
+import sqlite3
+import json
+from datetime import datetime
+
+def login_user(user):
+    """Checks for the user in the database
+
+    Args:
+        user (dict): Contains the username and password of the user trying to login
+
+    Returns:
+        json string: If the user was found will return valid boolean of True and the user's id as the token
+                     If the user was not found will return valid boolean False
+    """
+    with sqlite3.connect('./db.sqlite3') as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+            select id, username
+            from Users
+            where username = ?
+            and password = ?
+        """, (user['username'], user['password']))
+
+        user_from_db = db_cursor.fetchone()
+
+        if user_from_db is not None:
+            response = {
+                'valid': True,
+                'token': user_from_db['id']
+            }
+        else:
+            response = {
+                'valid': False
+            }
+
+        return json.dumps(response)
+
+
+def create_user(user):
+    """Adds a user to the database when they register
+
+    Args:
+        user (dictionary): The dictionary passed to the register post request
+
+    Returns:
+        json string: Contains the token of the newly created user
+    """
+    with sqlite3.connect('./db.sqlite3') as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        Insert into Users (first_name, last_name, username, email, password, bio, created_on, active) values (?, ?, ?, ?, ?, ?, ?, 1)
+        """, (
+            user['first_name'],
+            user['last_name'],
+            user['username'],
+            user['email'],
+            user['password'],
+            user['bio'],
+            datetime.now()
+        ))
+
+        id = db_cursor.lastrowid
+
+        return json.dumps({
+            'token': id,
+            'valid': True
+        })
+
+def get_all_animals():
+    # Open a connection to the database
+    with sqlite3.connect("./kennel.sqlite3") as conn:
+
+    # Just use these. It's a Black Box.
+        conn.row_factory = sqlite3.Row
+    db_cursor = conn.cursor()
+
+    # Write the SQL query to get the information you want
+    db_cursor.execute("""
+    SELECT
+        a.id,
+        a.name,
+        a.breed,
+        a.status,
+        a.location_id,
+        a.customer_id,
+        l.name location_name,
+        l.address location_address,
+        c.id customer_id,
+        c.name customer_name,
+        c.address customer_address
+    FROM Animal a
+    JOIN Location l
+        ON l.id = a.location_id
+    JOIN Customer c
+        ON c.id = a.customer_id
+    """)
+
+    # Initialize an empty list to hold all animal representations
+    animals = []
+
+    # Convert rows of data into a Python list
+    dataset = db_cursor.fetchall()
+
+    # Iterate list of data returned from database
+    for row in dataset:
+
+        # Create an animal instance from the current row
+        animal = Animal(row['id'], row['name'], row['breed'], row['status'],
+                row['location_id'], row['customer_id'])
+
+        # Create a Location instance from the current row
+        location = Location(row['location_id'], row['location_name'], row['location_address'])
+        customer = Customer(row['customer_id'], row['customer_name'], row['customer_address'])
+
+        # Add the dictionary representation of the location to the animal
+        animal.location = location.__dict__
+        animal.customer = customer.__dict__
+
+        # Add the dictionary representation of the animal to the list
+        animals.append(animal.__dict__)
+
+    return animals
+
+def delete_user(id):
+    """Deletes a user from the database.
+
+    Args:
+        id (int): The ID of the user to delete.
+    """
+    with sqlite3.connect('./db.sqlite3') as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+            DELETE FROM Users
+            WHERE id = ?
+        """, (id,))

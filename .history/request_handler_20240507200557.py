@@ -83,20 +83,21 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
+        pass
+        self.__set_headers(204)
         content_len = int(self.headers.get('content-length', 0))
-        post_body = self.rfile.read(content_len)
+        post_body = json.loads(self.rfile.read(content_len))
         post_body = json.loads(post_body)
         
         #Parse the URL
-        (resource, id) = self.parse_url()
-        #Update a single user
+        (resource, id) = self.parse_url(self.path)
+        #Update a singe user
         if resource == "users":
             success = update_user(id, post_body)
             if success:
-                self._set_headers(204)
+                self.set_response(204)
             else:
-                self._set_headers(404)
-            self.wfile.write("".encode())    
+                self.set_response(404)
 
     def do_DELETE(self):
         """Handle DELETE Requests"""

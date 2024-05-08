@@ -83,6 +83,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
+        self._set_headers(204)
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
         post_body = json.loads(post_body)
@@ -96,7 +97,6 @@ class HandleRequests(BaseHTTPRequestHandler):
                 self._set_headers(204)
             else:
                 self._set_headers(404)
-            self.wfile.write("".encode())    
 
     def do_DELETE(self):
         """Handle DELETE Requests"""

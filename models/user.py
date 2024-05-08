@@ -1,0 +1,31 @@
+class User:
+  def __init__(self, id, first_name, last_name, email, bio, username, password, profile_image_url, created_on, active):
+    self.id = id
+    self.first_name = first_name
+    self.last_name = last_name
+    self.email = email
+    self.bio = bio
+    self.username = username
+    self.password = password
+    self.profile_image_url = profile_image_url
+    self.created_on = created_on
+    self.active = active
+    
+class Serialized():
+  def __init__(self, id, first_name, last_name, email, bio, username,  profile_image_url, created_on, active):
+    self.id = id
+    self.first_name = first_name  
+    self.last_name = last_name
+    self.email = email
+    self.bio = bio
+    self.username = username
+    self.profile_image_url = profile_image_url
+    self.created_on = created_on
+    self.active = active   
+
+class SerializedUserManagement():
+  def __init__(self, username, first_name, last_name, email):
+    self.username = username
+    self.first_name = first_name
+    self.last_name = last_name
+    self.email = email

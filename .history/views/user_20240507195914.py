@@ -49,8 +49,8 @@ def create_user(user):
     """
     with sqlite3.connect('./db.sqlite3') as conn:
         conn.row_factory = sqlite3.Row
-        db_cursor = conn.cursor()
-        
+        db_cursor = conn.cursor()00
+
         db_cursor.execute("""
         Insert into Users (first_name, last_name, username, email, password, bio, created_on, active) values (?, ?, ?, ?, ?, ?, ?, 1)
         """, (
@@ -71,18 +71,17 @@ def create_user(user):
         })
 
 def update_user(id, new_user):
-    with sqlite3.connect("./db.sqlite3") as conn:
+    with sqlite3.connect("./kennel.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        UPDATE Users
+        UPDATE User
             SET
-                first_name = ?,
-                last_name = ?,
-                username = ?,
-                email = ?,
-                password = ?,
-                bio = ?
+                name = ?,
+                breed = ?,
+                status = ?,
+                location_id = ?,
+                customer_id = ?
         WHERE id = ?
         """, (new_user['first_name'], new_user['last_name'],
               new_user['username'], new_user['email'],
@@ -99,6 +98,8 @@ def update_user(id, new_user):
     else:
         # Forces 204 response by main module
         return True
+        
+
 def get_all_users():
     # Open a connection to the database
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -175,13 +176,12 @@ def get_all_users_management():
 
         db_cursor.execute("""
         SELECT
-            u.id,
+            u.username,
             u.first_name,
             u.last_name,
-            u.email,
-            u.username
+            u.email
         FROM Users u
-        ORDER BY u.username COLLATE NOCASE ASC
+        ORDER BY u.username
         """)
 
         dataset = db_cursor.fetchall()

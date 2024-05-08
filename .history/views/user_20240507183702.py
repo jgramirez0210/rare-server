@@ -1,7 +1,7 @@
 import sqlite3
 import json
 from datetime import datetime
-from models import User, Serialized, SerializedUserManagement
+from models import User, Serialized
 
 def login_user(user):
     """Checks for the user in the database
@@ -50,7 +50,7 @@ def create_user(user):
     with sqlite3.connect('./db.sqlite3') as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
-        
+
         db_cursor.execute("""
         Insert into Users (first_name, last_name, username, email, password, bio, created_on, active) values (?, ?, ?, ?, ?, ?, ?, 1)
         """, (
@@ -70,35 +70,6 @@ def create_user(user):
             'valid': True
         })
 
-def update_user(id, new_user):
-    with sqlite3.connect("./db.sqlite3") as conn:
-        db_cursor = conn.cursor()
-
-        db_cursor.execute("""
-        UPDATE Users
-            SET
-                first_name = ?,
-                last_name = ?,
-                username = ?,
-                email = ?,
-                password = ?,
-                bio = ?
-        WHERE id = ?
-        """, (new_user['first_name'], new_user['last_name'],
-              new_user['username'], new_user['email'],
-              new_user['password'], new_user['bio'], id, ))
-
-        # Were any rows affected?
-        # Did the client send an `id` that exists?
-        rows_affected = db_cursor.rowcount
-
-    # return value of this function
-    if rows_affected == 0:
-        # Forces 404 response by main module
-        return False
-    else:
-        # Forces 204 response by main module
-        return True
 def get_all_users():
     # Open a connection to the database
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -167,31 +138,6 @@ def get_single_user(id):
             return user.__dict__
         else:
             return None
-
-def get_all_users_management():
-    with sqlite3.connect("./db.sqlite3") as conn:
-        conn.row_factory = sqlite3.Row
-        db_cursor = conn.cursor()
-
-        db_cursor.execute("""
-        SELECT
-            u.id,
-            u.first_name,
-            u.last_name,
-            u.email,
-            u.username
-        FROM Users u
-        ORDER BY u.username COLLATE NOCASE ASC
-        """)
-
-        dataset = db_cursor.fetchall()
-        users_management = []
-
-        for row in dataset:
-            user_management = SerializedUserManagement(row['username'], row['first_name'], row['last_name'], row['email'])
-            users_management.append(user_management.__dict__)
-
-    return users_management
 
 def delete_user(id):
     """Deletes a user from the database.
