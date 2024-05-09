@@ -89,7 +89,7 @@ INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
 
-
+SELECT * FROM Comments;
 
 INSERT INTO Users (first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)
 VALUES ('John', 'Doe', 'john.doe@example.com', 'Bio of John', 'johndoe', 'password123', 'http://example.com/johndoe.jpg', date('now'), 1);
@@ -121,5 +121,3 @@ INSERT INTO "Comments" ("post_id", "author_id", "content") VALUES
 (3, 3, 'Interesting perspective, never thought about it this way.'),
 (1, 4, 'Could you provide more details on this?'),
 (2, 5, 'I disagree with your point, here is why...');
-
-SELECT * FROM users;
