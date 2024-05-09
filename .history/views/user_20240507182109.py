@@ -1,8 +1,7 @@
 import sqlite3
 import json
 from datetime import datetime
-from models import User, Serialized, SerializedUserManagement
-
+from models import User
 
 def login_user(user):
     """Checks for the user in the database
@@ -51,7 +50,7 @@ def create_user(user):
     with sqlite3.connect('./db.sqlite3') as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
-        
+
         db_cursor.execute("""
         Insert into Users (first_name, last_name, username, email, password, bio, created_on, active) values (?, ?, ?, ?, ?, ?, ?, 1)
         """, (
@@ -71,35 +70,6 @@ def create_user(user):
             'valid': True
         })
 
-def update_user(id, new_user):
-    with sqlite3.connect("./db.sqlite3") as conn:
-        db_cursor = conn.cursor()
-
-        db_cursor.execute("""
-        UPDATE Users
-            SET
-                first_name = ?,
-                last_name = ?,
-                username = ?,
-                email = ?,
-                password = ?,
-                bio = ?
-        WHERE id = ?
-        """, (new_user['first_name'], new_user['last_name'],
-              new_user['username'], new_user['email'],
-              new_user['password'], new_user['bio'], id, ))
-
-        # Were any rows affected?
-        # Did the client send an `id` that exists?
-        rows_affected = db_cursor.rowcount
-
-    # return value of this function
-    if rows_affected == 0:
-        # Forces 404 response by main module
-        return False
-    else:
-        # Forces 204 response by main module
-        return True
 def get_all_users():
     # Open a connection to the database
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -130,69 +100,47 @@ def get_all_users():
         dataset = db_cursor.fetchall()
 
         # Iterate list of data returned from database
-    for row in dataset:
-        serialized_user = Serialized(row['id'], row['first_name'], row['last_name'], row['email'], row['bio'], row['username'], row['profile_image_url'], row['created_on'], row['active'])
-        users.append(serialized_user.__dict__)
+        for row in dataset:
 
-    return json.dumps(users)
+            # Create an animal instance from the current row
+            user = User(row['id'], row['first_name'], row['last_name'], row['email'], row['bio'], row['username'], row['profile_image_url'], row['created_on'], row['active'])
 
-def get_single_user(id):
+            # Add the dictionary representation of the animal to the list
+            users.append(user.__dict__)
+
+    return users
+
+def create_user_table():
     with sqlite3.connect("./db.sqlite3") as conn:
-        conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        SELECT
-            u.id,
-            u.first_name,
-            u.last_name,
-            u.email,
-            u.bio,
-            u.username,
-            u.password,
-            u.profile_image_url,
-            u.created_on,
-            u.active
-        FROM Users u
-        WHERE u.id = ?
-        """, ( id, ))
-
-        data = db_cursor.fetchone()
-
-        # Check if data is not None before trying to access its items
-        if data is not None:
-            user = User(data['id'], data['first_name'], data['last_name'],
-                        data['email'], data['bio'], data['username'], data['password'],
-                        data['profile_image_url'], data['created_on'], data['active'])
-        
-            return user.__dict__
-        else:
-            return None
-
-def get_all_users_management():
-    with sqlite3.connect("./db.sqlite3") as conn:
-        conn.row_factory = sqlite3.Row
-        db_cursor = conn.cursor()
-
-        db_cursor.execute("""
-        SELECT
-            u.id,
-            u.first_name,
-            u.last_name,
-            u.email,
-            u.username
-        FROM Users u
-        ORDER BY u.username COLLATE NOCASE ASC
+        CREATE TABLE IF NOT EXISTS User (
+            id INTEGER PRIMARY KEY,
+            first_name TEXT,
+            last_name TEXT,
+            email TEXT,
+            bio TEXT,
+            username TEXT,
+            profile_image_url TEXT,
+            created_on TEXT,
+            active INTEGER
+        )
         """)
 
-        dataset = db_cursor.fetchall()
-        users_management = []
+        conn.commit()
 
-        for row in dataset:
-            user_management = SerializedUserManagement(row['username'], row['first_name'], row['last_name'], row['email'])
-            users_management.append(user_management.__dict__)
+    data = db_cursor.fetchone()
 
-    return users_management
+    # Check if data is not None before trying to access its items
+    if data is not None:
+      user = User(data['id'], data['first_name'], data['last_name'],
+          data['email'], data['bio'], data['username'], data['profile_image_url'],
+          data['created_on'], data['active'])
+
+      return user.__dict__
+    else:
+      return None
 
 def delete_user(id):
     """Deletes a user from the database.

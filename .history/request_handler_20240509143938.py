@@ -51,33 +51,46 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        """Handle Get requests to the server"""
         self._set_headers(200)
         response = {}
-    
-        # Parse URL and store entire tuple in a variable
+        
         parsed = self.parse_url()
-        resource, id = parsed
-    
+        
         if '?' not in self.path:
+            ( resource, id ) = parsed
             if resource == "users":
                 if id is not None:
-                    response = get_single_user(id)
+                    response = f"{get_single_user(id)}"
                 else:
-                    response = get_all_users()
+                    response = f"{get_all_users()}"
             elif resource == "users_management":
-                response = get_all_users_management()
-            elif resource == "comments":
+                response = f"{get_all_users_management()}"
+        self.wfile.write(json.dumps(response).encode())        
+        """Handle Get requests to the server"""
+
+        self._set_headers(200)
+        response = {}
+
+        # Parse URL and store entire tuple in a variable
+        parsed = self.parse_url()
+
+        # If the path does not include a query parameter, continue with the original if block
+        if '?' not in self.path:
+            (resource, id) = parsed
+
+            if resource == "Comments":
                 if id is not None:
                     response = get_single_comment(id)
                 else:
                     response = get_all_comments()
-            elif resource == "posts":
+
+            if resource == "posts":
                 if id is not None:
                     response = get_single_post(id)
+
                 else:
                     response = get_all_posts()
-    
+
         self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
@@ -113,34 +126,41 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+        
+        #Parse the URL
+        (resource, id) = self.parse_url()
+        #Update a single user
+        if resource == "users":
+            success = update_user(id, post_body)
+            if success:
+                self._set_headers(204)
+            else:
+                self._set_headers(404)
+            self.wfile.write("".encode())    
 
-        try:
-            post_body = json.loads(post_body)
-        except json.JSONDecodeError:
-            self._set_headers(400)
-            self.wfile.write("Invalid JSON".encode())
-            return
+        self._set_headers(204)
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
 
-        # Parse the URL
         (resource, id) = self.parse_url()
 
         success = False
 
-        # Update a single user
-        if resource == "users":
-            success = update_user(id, post_body)
-        elif resource == "comments":
+        if resource == "comments":
             success = update_comment(id, post_body)
-        elif resource == "posts":
+        self.wfile.write("".encode())
+        if resource == "posts":
+
             success = update_post(id, post_body)
+        self.wfile.write("".encode())
 
         if success:
             self._set_headers(204)
         else:
             self._set_headers(404)
 
-        self.wfile.write("".encode())
-        
     def do_DELETE(self):
         """Handles DELETE requests to the server"""
         self._set_headers(204)

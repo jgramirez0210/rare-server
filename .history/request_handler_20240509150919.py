@@ -83,64 +83,73 @@ class HandleRequests(BaseHTTPRequestHandler):
     def do_POST(self):
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
-        post_body = json.loads(self.rfile.read(content_len))
-        response = ''
+    
+        try:
+            post_body = json.loads(self.rfile.read(content_len))
+        except json.JSONDecodeError:
+            self.wfile.write("Invalid JSON".encode())
+            return
+    
         resource, _ = self.parse_url()
-
+    
+        response = None
+    
         if resource == 'login':
             response = login_user(post_body)
-        if resource == 'register':
+        elif resource == 'register':
             response = create_user(post_body)
-
-        new_post = None
-
-        if resource == "posts":
-            new_post = create_post(post_body)
-
-        self.wfile.write(json.dumps(new_post).encode())
-
-        new_comment = None
-        if resource == 'comments':
-            new_comment = create_comment(post_body)
-
-        self.wfile.write(json.dumps(new_comment).encode())
-
-        # self.wfile.write(response.encode())
-        return response
-
+        elif resource == "posts":
+            response = create_post(post_body)
+        elif resource == 'comments':
+            response = create_comment(post_body)
+    
+        self.wfile.write(json.dumps(response).encode())
     def do_PUT(self):
         """Handles PUT requests to the server"""
 
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
-
+        post_body = json.loads(post_body)
+        
         try:
-            post_body = json.loads(post_body)
+            post_body = json.loads(post_data)
         except json.JSONDecodeError:
             self._set_headers(400)
-            self.wfile.write("Invalid JSON".encode())
-            return
+        self.wfile.write("Invalid JSON".encode())
+        return
+        #Parse the URL
+        (resource, id) = self.parse_url()
+        #Update a single user
+        if resource == "users":
+            success = update_user(id, post_body)
+            if success:
+                self._set_headers(204)
+            else:
+                self._set_headers(404)
+            self.wfile.write("".encode())    
 
-        # Parse the URL
+        self._set_headers(204)
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
         (resource, id) = self.parse_url()
 
         success = False
 
-        # Update a single user
-        if resource == "users":
-            success = update_user(id, post_body)
-        elif resource == "comments":
+        if resource == "comments":
             success = update_comment(id, post_body)
-        elif resource == "posts":
+        self.wfile.write("".encode())
+        if resource == "posts":
+
             success = update_post(id, post_body)
+        self.wfile.write("".encode())
 
         if success:
             self._set_headers(204)
         else:
             self._set_headers(404)
 
-        self.wfile.write("".encode())
-        
     def do_DELETE(self):
         """Handles DELETE requests to the server"""
         self._set_headers(204)

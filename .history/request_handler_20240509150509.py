@@ -113,34 +113,41 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+        
+        #Parse the URL
+        (resource, id) = self.parse_url()
+        #Update a single user
+        if resource == "users":
+            success = update_user(id, post_body)
+            if success:
+                self._set_headers(204)
+            else:
+                self._set_headers(404)
+            self.wfile.write("".encode())    
 
-        try:
-            post_body = json.loads(post_body)
-        except json.JSONDecodeError:
-            self._set_headers(400)
-            self.wfile.write("Invalid JSON".encode())
-            return
+        self._set_headers(204)
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
 
-        # Parse the URL
         (resource, id) = self.parse_url()
 
         success = False
 
-        # Update a single user
-        if resource == "users":
-            success = update_user(id, post_body)
-        elif resource == "comments":
+        if resource == "comments":
             success = update_comment(id, post_body)
-        elif resource == "posts":
+        self.wfile.write("".encode())
+        if resource == "posts":
+
             success = update_post(id, post_body)
+        self.wfile.write("".encode())
 
         if success:
             self._set_headers(204)
         else:
             self._set_headers(404)
 
-        self.wfile.write("".encode())
-        
     def do_DELETE(self):
         """Handles DELETE requests to the server"""
         self._set_headers(204)

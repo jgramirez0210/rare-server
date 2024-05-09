@@ -3,7 +3,6 @@ import json
 from datetime import datetime
 from models import User, Serialized, SerializedUserManagement
 
-
 def login_user(user):
     """Checks for the user in the database
 
@@ -176,13 +175,12 @@ def get_all_users_management():
 
         db_cursor.execute("""
         SELECT
-            u.id,
+            u.username,
             u.first_name,
             u.last_name,
-            u.email,
-            u.username
+            u.email
         FROM Users u
-        ORDER BY u.username COLLATE NOCASE ASC
+        ORDER BY u.username
         """)
 
         dataset = db_cursor.fetchall()

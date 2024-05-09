@@ -67,7 +67,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_all_users()
             elif resource == "users_management":
                 response = get_all_users_management()
-            elif resource == "comments":
+            elif resource == "omments":
                 if id is not None:
                     response = get_single_comment(id)
                 else:
