@@ -39,7 +39,7 @@ CREATE TABLE "Posts" (
   "image_url" varchar,
   "content" varchar,
   "approved" bit,
-  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
+  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`),
 );
 
 CREATE TABLE "Comments" (
@@ -88,29 +88,3 @@ CREATE TABLE "Categories" (
 INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
-
-SELECT * FROM Users;
-
-INSERT INTO Users (first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)
-VALUES ('John', 'Doe', 'john.doe@example.com', 'Bio of John', 'johndoe', 'password123', 'http://example.com/johndoe.jpg', date('now'), 1);
-INSERT INTO Users (first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)
-VALUES 
-('Jane', 'Doe', 'jane.doe@example.com', 'Bio of Jane', 'janedoe', 'password123', 'http://example.com/janedoe.jpg', date('now'), 1),
-('Alice', 'Smith', 'alice.smith@example.com', 'Bio of Alice', 'alicesmith', 'password123', 'http://example.com/alicesmith.jpg', date('now'), 1),
-('Bob', 'Johnson', 'bob.johnson@example.com', 'Bio of Bob', 'bobjohnson', 'password123', 'http://example.com/bobjohnson.jpg', date('now'), 1),
-('Charlie', 'Brown', 'charlie.brown@example.com', 'Bio of Charlie', 'charliebrown', 'password123', 'http://example.com/charliebrown.jpg', date('now'), 1),
-('David', 'Williams', 'david.williams@example.com', 'Bio of David', 'davidwilliams', 'password123', 'http://example.com/davidwilliams.jpg', date('now'), 1),
-('Eve', 'Jones', 'eve.jones@example.com', 'Bio of Eve', 'evejones', 'password123', 'http://example.com/evejones.jpg', date('now'), 1),
-('Frank', 'Miller', 'frank.miller@example.com', 'Bio of Frank', 'frankmiller', 'password123', 'http://example.com/frankmiller.jpg', date('now'), 1),
-('Grace', 'Davis', 'grace.davis@example.com', 'Bio of Grace', 'gracedavis', 'password123', 'http://example.com/gracedavis.jpg', date('now'), 1),
-('Harry', 'Garcia', 'harry.garcia@example.com', 'Bio of Harry', 'harrygarcia', 'password123', 'http://example.com/harrygarcia.jpg', date('now'), 1);
-=======
-
-PRAGMA table_info(Users);
-PRAGMA table_info(Categories);
-PRAGMA table_info(PostTags);
-PRAGMA table_info(Tags);
-PRAGMA table_info(Posts);
-
-INSERT INTO Posts VALUES (null, 1, 1, "First", "1999-09-11", "https://upload.wikimedia.org/wikipedia/commons/c/c5/World_Trade_Center%2C_New_York_City_-_aerial_view_%28March_2001%29.jpg", "Asolute first", 1);
-

@@ -39,7 +39,7 @@ CREATE TABLE "Posts" (
   "image_url" varchar,
   "content" varchar,
   "approved" bit,
-  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
+  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`),
 );
 
 CREATE TABLE "Comments" (
@@ -88,7 +88,6 @@ CREATE TABLE "Categories" (
 INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
-
 SELECT * FROM Users;
 
 INSERT INTO Users (first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)
@@ -104,13 +103,3 @@ VALUES
 ('Frank', 'Miller', 'frank.miller@example.com', 'Bio of Frank', 'frankmiller', 'password123', 'http://example.com/frankmiller.jpg', date('now'), 1),
 ('Grace', 'Davis', 'grace.davis@example.com', 'Bio of Grace', 'gracedavis', 'password123', 'http://example.com/gracedavis.jpg', date('now'), 1),
 ('Harry', 'Garcia', 'harry.garcia@example.com', 'Bio of Harry', 'harrygarcia', 'password123', 'http://example.com/harrygarcia.jpg', date('now'), 1);
-=======
-
-PRAGMA table_info(Users);
-PRAGMA table_info(Categories);
-PRAGMA table_info(PostTags);
-PRAGMA table_info(Tags);
-PRAGMA table_info(Posts);
-
-INSERT INTO Posts VALUES (null, 1, 1, "First", "1999-09-11", "https://upload.wikimedia.org/wikipedia/commons/c/c5/World_Trade_Center%2C_New_York_City_-_aerial_view_%28March_2001%29.jpg", "Asolute first", 1);
-
