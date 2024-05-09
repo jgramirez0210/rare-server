@@ -122,4 +122,4 @@ INSERT INTO "Comments" ("post_id", "author_id", "content") VALUES
 (1, 4, 'Could you provide more details on this?'),
 (2, 5, 'I disagree with your point, here is why...');
 
-SELECT * FROM users;
+SELECT * FROM Posts;
