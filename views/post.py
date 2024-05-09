@@ -21,7 +21,7 @@ def get_all_posts():
             p.image_url,
             p.content,
             p.approved
-            
+
         FROM Posts p
             """
         )
@@ -64,7 +64,7 @@ def get_single_post(id):
             p.image_url,
             p.content,
             p.approved
-            
+
         FROM Posts p
         WHERE p.id = ?
         """,
@@ -92,7 +92,7 @@ def create_post(new_post):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO Post
+        INSERT INTO Posts
             ( user_id, category_id, title, publication_date, image_url, content, approved )
         VALUES
             ( ?, ?, ?, ?, ?, ?, ?);
@@ -125,14 +125,15 @@ def update_post(id, new_post):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        UPDATE post
+        UPDATE Posts
             SET
                 user_id = ?,
                 title = ?,
                 publication_date = ?,
                 image_url = ?,
                 content = ?,
-                approved = ?
+                approved = ?,
+                category_id = ?
         WHERE id = ?
         """, (new_post['user_id'], new_post['category_id'],
               new_post['title'], new_post['publication_date'],
