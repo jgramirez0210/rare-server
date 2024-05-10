@@ -85,30 +85,22 @@ class HandleRequests(BaseHTTPRequestHandler):
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
-        response = ''
+    
         resource, _ = self.parse_url()
-
+    
         if resource == 'login':
             response = login_user(post_body)
-        if resource == 'register':
+            self.wfile.write(json.dumps(response).encode())
+        elif resource == 'register':
             response = create_user(post_body)
-
-        new_post = None
-
-        if resource == "posts":
+            self.wfile.write(json.dumps(response).encode())
+        elif resource == "posts":
             new_post = create_post(post_body)
-
-        self.wfile.write(json.dumps(new_post).encode())
-
-        new_comment = None
-        if resource == 'comments':
+            self.wfile.write(json.dumps(new_post).encode())
+        elif resource == 'comments':
             new_comment = create_comment(post_body)
-
-        self.wfile.write(json.dumps(new_comment).encode())
-
-        # self.wfile.write(response.encode())
-        return response
-
+            self.wfile.write(json.dumps(new_comment).encode())
+    
     def do_PUT(self):
         """Handles PUT requests to the server"""
 

@@ -72,7 +72,6 @@ def create_user(user):
             'token': id,
             'valid': True
         })
-
 def update_user(id, new_user):
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
@@ -142,7 +141,7 @@ def get_all_users():
         serialized_user = Serialized(row['id'], row['first_name'], row['last_name'], row['email'], row['bio'], row['username'], row['profile_image_url'], row['created_on'], row['active'])
         users.append(serialized_user.__dict__)
 
-    return users
+    return json.dumps(users)
 
 def get_single_user(id):
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -173,7 +172,7 @@ def get_single_user(id):
                         data['email'], data['bio'], data['username'], data['password'],
                         data['profile_image_url'], data['created_on'], data['active'])
         
-            return user.__dict__
+            return json.dumps(user.__dict__)
         else:
             return None
 
