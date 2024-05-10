@@ -55,7 +55,6 @@ class HandleRequests(BaseHTTPRequestHandler):
         self._set_headers(200)
         response = ""
 
-        # Parse URL and store entire tuple in a variable
         parsed = self.parse_url()
         resource, id = parsed
 
@@ -77,9 +76,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_post(id)
                 else:
                     response = get_all_posts()
-
-        # Convert the list to a JSON string with indentation
-        self.wfile.write(json.dumps(response, indent=4).encode())
+       
+        self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
         self._set_headers(201)
@@ -148,7 +146,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         (resource, id) = self.parse_url()
 
-        if resource == "1":
+        if resource == "comments":
             delete_comment(id)
 
         if resource == "posts":

@@ -113,6 +113,8 @@ PRAGMA table_info(PostTags);
 PRAGMA table_info(Tags);
 PRAGMA table_info(Posts);
 
+INSERT INTO Posts VALUES (null, 1, 1, "First", "1999-09-11", "https://upload.wikimedia.org/wikipedia/commons/c/c5/World_Trade_Center%2C_New_York_City_-_aerial_view_%28March_2001%29.jpg", "Asolute first", 1);
+
 INSERT INTO "Comments" ("post_id", "author_id", "content") VALUES
 (1, 1, 'This is a great post!'),
 (2, 2, 'I found this very helpful, thanks!'),
@@ -120,11 +122,4 @@ INSERT INTO "Comments" ("post_id", "author_id", "content") VALUES
 (1, 4, 'Could you provide more details on this?'),
 (2, 5, 'I disagree with your point, here is why...');
 
-INSERT INTO Posts (user_id, category_id, title, publication_date, image_url, content, approved) VALUES
-(1, 1, 'Understanding AI', '2022-01-01', 'http://example.com/ai.jpg', 'This post is about understanding AI...', 1),
-(2, 2, 'The Future of Quantum Computing', '2022-02-01', 'http://example.com/quantum.jpg', 'Quantum computing is the future...', 1),
-(3, 1, 'The Role of Data in Machine Learning', '2022-03-01', 'http://example.com/data.jpg', 'Data plays a crucial role in machine learning...', 1),
-(4, 3, 'Cybersecurity in the Modern Age', '2022-04-01', 'http://example.com/cybersecurity.jpg', 'Cybersecurity is more important than ever...', 1),
-(5, 2, 'The Impact of Blockchain Technology', '2022-05-01', 'http://example.com/blockchain.jpg', 'Blockchain technology has a huge impact...', 1);
-
-SELECT * FROM posts;
+SELECT * FROM comments;
