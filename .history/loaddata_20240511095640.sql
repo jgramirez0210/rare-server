@@ -94,7 +94,7 @@ INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.c
 INSERT INTO Users (first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)
 VALUES ('John', 'Doe', 'john.doe@example.com', 'Bio of John', 'johndoe', 'password123', 'http://example.com/johndoe.jpg', date('now'), 1);
 INSERT INTO Users (first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)
-VALUES
+VALUES 
 ('Jane', 'Doe', 'jane.doe@example.com', 'Bio of Jane', 'janedoe', 'password123', 'http://example.com/janedoe.jpg', date('now'), 1),
 ('Alice', 'Smith', 'alice.smith@example.com', 'Bio of Alice', 'alicesmith', 'password123', 'http://example.com/alicesmith.jpg', date('now'), 1),
 ('Bob', 'Johnson', 'bob.johnson@example.com', 'Bio of Bob', 'bobjohnson', 'password123', 'http://example.com/bobjohnson.jpg', date('now'), 1),
@@ -104,7 +104,7 @@ VALUES
 ('Frank', 'Miller', 'frank.miller@example.com', 'Bio of Frank', 'frankmiller', 'password123', 'http://example.com/frankmiller.jpg', date('now'), 1),
 ('Grace', 'Davis', 'grace.davis@example.com', 'Bio of Grace', 'gracedavis', 'password123', 'http://example.com/gracedavis.jpg', date('now'), 1),
 ('Harry', 'Garcia', 'harry.garcia@example.com', 'Bio of Harry', 'harrygarcia', 'password123', 'http://example.com/harrygarcia.jpg', date('now'), 1);
-
+=======
 
 PRAGMA table_info(Users);
 PRAGMA table_info(Categories);
@@ -129,4 +129,4 @@ INSERT INTO Posts (user_id, category_id, title, publication_date, image_url, con
 
 SELECT * FROM Users;
 
-DELETE FROM Users WHERE id = 22;
+DELETE FROM Users WHERE id = 24;
