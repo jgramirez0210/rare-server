@@ -129,4 +129,4 @@ INSERT INTO Posts (user_id, category_id, title, publication_date, image_url, con
 
 SELECT * FROM Users;
 
-DELETE FROM Users WHERE id = 22;
+DELETE FROM Users WHERE id = 24;
