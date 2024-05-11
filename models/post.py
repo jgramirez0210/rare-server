@@ -9,9 +9,12 @@ class Post:
         self.content = content
         self.approved = approved
 
-    def serializer_mvp(self, user_id, title, publication_date, image_url, content):
-        self.user_id = user_id
-        self.title = title
-        self.publication_date = publication_date
-        self.image_url = image_url
-        self.content = content
+    def serializer_mvp(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'title': self.title,
+            'publication_date': self.publication_date,
+            'image_url': self.image_url,
+            'content': self.content
+        }
