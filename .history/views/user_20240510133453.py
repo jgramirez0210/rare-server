@@ -53,15 +53,13 @@ def create_user(user):
         db_cursor = conn.cursor()
         
         db_cursor.execute("""
-        INSERT INTO Users (first_name, last_name, username, email, password, profile_image_url, bio, created_on, active) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)
+        Insert into Users (first_name, last_name, username, email, password, bio, created_on, active) values (?, ?, ?, ?, ?, ?, ?, 1)
         """, (
             user['first_name'],
             user['last_name'],
             user['username'],
             user['email'],
             user['password'],
-            user['profile_image_url'],
             user['bio'],
             datetime.now()
         ))
@@ -85,16 +83,11 @@ def update_user(id, new_user):
                 username = ?,
                 email = ?,
                 password = ?,
-                profile_image_url = ?,
                 bio = ?
         WHERE id = ?
         """, (new_user['first_name'], new_user['last_name'],
               new_user['username'], new_user['email'],
-              new_user['password'], new_user['profile_image_url'],
-              new_user['bio'], id, ))
-
-        # Commit the transaction
-        conn.commit()
+              new_user['password'], new_user['bio'], id, ))
 
         # Were any rows affected?
         # Did the client send an `id` that exists?
@@ -107,7 +100,6 @@ def update_user(id, new_user):
     else:
         # Forces 204 response by main module
         return True
-    
 def get_all_users():
     # Open a connection to the database
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -142,7 +134,7 @@ def get_all_users():
         serialized_user = Serialized(row['id'], row['first_name'], row['last_name'], row['email'], row['bio'], row['username'], row['profile_image_url'], row['created_on'], row['active'])
         users.append(serialized_user.__dict__)
 
-    return users
+    return json.dumps(users)
 
 def get_single_user(id):
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -173,7 +165,7 @@ def get_single_user(id):
                         data['email'], data['bio'], data['username'], data['password'],
                         data['profile_image_url'], data['created_on'], data['active'])
         
-            return user.__dict__
+            return json.dump(user.__dict__)
         else:
             return None
 

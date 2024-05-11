@@ -148,7 +148,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         (resource, id) = self.parse_url()
 
-        if resource == "1":
+        if resource == "comments":
             delete_comment(id)
 
         if resource == "posts":
