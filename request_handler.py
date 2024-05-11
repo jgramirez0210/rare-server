@@ -141,7 +141,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             self._set_headers(404)
 
         self.wfile.write("".encode())
-        
+
     def do_DELETE(self):
         """Handles DELETE requests to the server"""
         self._set_headers(204)
@@ -153,6 +153,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             delete_post(id)
+
+        if resource == 'comments':
+            delete_comment(id)
 
         self.wfile.write("".encode())
 import sqlite3
