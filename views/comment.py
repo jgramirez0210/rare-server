@@ -199,7 +199,7 @@ def delete_comment(id):
         db_cursor.execute("""
             DELETE FROM Comments
             WHERE id = ?
-            """, (id,))
+            """, (id,),)
 
     return 'Comment deleted'
 
