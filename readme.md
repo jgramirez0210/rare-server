@@ -26,7 +26,6 @@ SQL
 1. Run the commands in the `loaddata.sql` file to create the tables in the database
 
 ## Contributions 
-Jay Lhomme - Added ability to do full CRUD for Posts
-Frank Campos - Added ability to do full CRUD for Comments
-Jesse Ramirez - Added abulity to do full CRUD For Users
-
+- Jay Lhomme - Added ability to do full CRUD for Posts
+- Frank Campos - Added ability to do full CRUD for Comments
+- Jesse Ramirez - Added ability to do full CRUD For Users.
