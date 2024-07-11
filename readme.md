@@ -8,14 +8,14 @@ The finished application will give users the ability to submit, update and comme
 
 The previous dev team was able to complete the client and server side portions of login and register. It is up to you to complete the remaining tickets. It is also up to you to decide how many of those tickets you will complete in the first sprint.
 
-## Tech/framework used
-Python
-SQL
+## Tech/Framework Used:
+- Python
+- SQL
 
-## ERD
+## ERD:
 ![Rare Server ERD](assets/rare-server-erd.png "Rare Server ERD")
 
-## Postman Tests
+## Postman Tests:
 [Postman Collection for Rare Server](https://rare-server.postman.co/workspace/Rare-Server-Workspace~a17a84ad-b447-438b-8887-52ae3c3fc5db/collection/29856352-f0660fd9-e4b2-4547-8593-f29f83a67757?action=share&creator=29856352)
 
 ## Installation:
@@ -25,7 +25,7 @@ SQL
 1. Add a connection to the database file
 1. Run the commands in the `loaddata.sql` file to create the tables in the database
 
-## Contributions 
+## Contributions: 
 - Jay Lhomme - Added ability to do full CRUD for Posts
 - Frank Campos - Added ability to do full CRUD for Comments
-- Jesse Ramirez - Added ability to do full CRUD For Users.
+- Jesse Ramirez - Added ability to do full CRUD For Users
