@@ -16,7 +16,7 @@ The previous dev team was able to complete the client and server side portions o
 ![Rare Server ERD](assets/rare-server-erd.png "Rare Server ERD")
 
 ## Postman Tests:
-[Postman Collection for Rare Server](https://rare-server.postman.co/workspace/Rare-Server-Workspace~a17a84ad-b447-438b-8887-52ae3c3fc5db/collection/29856352-f0660fd9-e4b2-4547-8593-f29f83a67757?action=share&creator=29856352)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/29856352-f0660fd9-e4b2-4547-8593-f29f83a67757?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D29856352-f0660fd9-e4b2-4547-8593-f29f83a67757%26entityType%3Dcollection%26workspaceId%3Da17a84ad-b447-438b-8887-52ae3c3fc5db)
 
 ## Installation:
 1. Run `pipenv shell` to start the virtual environment
